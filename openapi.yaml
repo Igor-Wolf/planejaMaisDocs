@@ -1,0 +1,357 @@
+openapi: 3.0.0
+info:
+  title: Paneja+
+  summary: API do projeto Planeja +
+  description: Projeto de gerenciamento de despesas e gastos
+  version: 1.0.0
+
+servers:
+  - url: https://planeja-mais-backend.vercel.app/api
+
+paths:
+  /login/myAccount:
+    get:
+      summary: Informações do Usuário
+      tags:
+        - Usuários
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  user:
+                    type: string
+                  email:
+                    type: string
+                  lastEmail:
+                    type: string
+                  birthday:
+                    type: string
+                    format: date-time
+                    example: "2025-01-08T12:00:00.000Z"
+                  passwordHash:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2025-01-21T23:02:54.937Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-01-21T23:02:54.937Z"
+                  isActive:
+                    type: boolean
+        "400":
+          description: "Erro"
+  /login/protected:
+    get:
+      summary: Teste de token opcional
+      tags:
+        - Usuários
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+      responses:
+        "200":
+          description: Token foi confimado, e usuário liberado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: string
+                  yat:
+                    type: number
+                  exp:
+                    type: number
+        "400":
+          description: "Erro"
+  /login/autenticateAccountEmail:
+    get:
+      summary: Autenticar a conta do usuário
+      tags:
+        - Usuários
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+      responses:
+        "200":
+          description: Retorna o token com autorização
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "Erro"
+  /login/forgotPassword/{email}:
+    get:
+      summary: Recuperar senha
+      tags:
+        - Usuários
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Dispara o email de recuperação de senha
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro"
+
+  /login/create:
+    post:
+      summary: Criar um  novo usuário
+      tags:
+        - Usuários
+      description: Atualiza o usuário no banco
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - user
+                - email
+                - lastEmail
+                - birthday
+                - passwordHash
+                - createdAt
+                - updatedAt
+                - isActive
+              properties:
+                name:
+                  type: string
+                user:
+                  type: string
+                email:
+                  type: string
+                lastEmail:
+                  type: string
+                birthday:
+                  type: string
+                  format: date-time
+                  example: "2025-01-08T12:00:00.000Z"
+                passwordHash:
+                  type: string
+                createdAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-21T23:02:54.937Z"
+                updatedAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-21T23:02:54.937Z"
+                isActive:
+                  type: boolean
+
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "409":
+          description: "Conflito, usuário ou email já cadastrados no banco"
+  /login/autentication:
+    post:
+      summary: Realizar o login
+      tags:
+        - Usuários
+      description: Realizar o login e gerar o token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user
+                - passwordHash
+                - remember
+              properties:
+                user:
+                  type: string
+                passwordHash:
+                  type: string
+                remember:
+                  type: boolean
+
+      responses:
+        "200":
+          description: Retorna o token com autorização
+          content:
+            application/json:
+              schema:
+                type: string
+        "401":
+          description: "Acesso não autorizado"
+        "409":
+          description: "Conflito, usuário precisa autenticar a conta por email"
+  /login/newPassword:
+    post:
+      summary: Alterar a senha do usuário
+      tags:
+        - Usuários
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+      description: Altera a senha do usuário no banco
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user
+                - passwordHash
+              properties:
+                user:
+                  type: string
+                passwordHash:
+                  type: string
+
+      responses:
+        "200":
+          description: Senha alterada
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: "Erro"
+  /login/update:
+    patch:
+      summary: Altera os dados do usuário
+      tags:
+        - Usuários
+      description: Altera os dados do usuário usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - user
+                - email
+                - lastEmail
+                - birthday
+                - passwordHash
+                - createdAt
+                - updatedAt
+                - isActive
+              properties:
+                name:
+                  type: string
+                user:
+                  type: string
+                email:
+                  type: string
+                lastEmail:
+                  type: string
+                birthday:
+                  type: string
+                  format: date-time
+                  example: "2025-01-08T12:00:00.000Z"
+                passwordHash:
+                  type: string
+                createdAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-21T23:02:54.937Z"
+                updatedAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-21T23:02:54.937Z"
+                isActive:
+                  type: boolean
+
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro"
+        "409":
+          description: "Conflito no banco de dados"
+  /login/delete:
+    delete:
+      summary: Deleta um usuário
+      tags:
+        - Usuários
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro"
