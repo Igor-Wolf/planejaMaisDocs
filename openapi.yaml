@@ -272,6 +272,14 @@ paths:
       summary: Altera os dados do usuário
       tags:
         - Usuários
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
       description: Altera os dados do usuário usuário. Parâmetro user nunca poderá ser alterado. Retornar todas as informações, mesmo se não forem alteradas.
       requestBody:
         required: true
