@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Paneja+
-  summary: API do projeto Planeja +
+  
   description: Projeto de gerenciamento de despesas e gastos
   version: 1.0.0
 
@@ -362,4 +362,572 @@ paths:
                   message:
                     type: string
         "400":
+          description: "Erro"        
+  /goal/myGoal/{year}/{month}:
+    get:
+      summary: Metas definidas
+      tags:
+        - Metas
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: year
+          in: path
+          required: true
+          description: Filtro do ano desejado
+          schema:
+            type: string
+        - name: month
+          in: path
+          required: true
+          description: Filtro do mês desejado
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  month:
+                    type: number
+                  year:
+                    type: number
+                  goal:
+                    type: number
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-01-21T23:02:54.937Z"
+                  user:
+                    type: string
+        "400":
           description: "Erro"
+  /goal/create:
+    post:
+      summary: Criar uma nova meta
+      tags:
+        - Metas
+      description: Cria novas metas, é possivel criar uma meta anual definindo o mês referente como 0, os demais seguem o padrão YYYY-MM
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - month
+                - year
+                - goal
+                - updatedAt
+              properties:
+                month:
+                  type: number
+                year:
+                  type: number
+                goal:
+                  type: number
+                updatedAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-21T23:02:54.937Z"
+      responses:
+        "201":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro na requisição ou no formato dos dados"
+        "409":
+          description: "Conflito, meta referente ao mês/ano já cadastrada"
+  /goal/update:
+    patch:
+      summary: Alterar a meta definida
+      tags:
+        - Metas
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+      description: Altera a meta definida é possivel alterar uma meta anual definindo o mês referente como 0, os demais seguem o padrão YYYY-MM
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - month
+                - year
+                - goal
+                - updatedAt
+              properties:
+                month:
+                  type: number
+                year:
+                  type: number
+                goal:
+                  type: number
+                updatedAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-21T23:02:54.937Z"
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"
+  /goal/delete/{year}/{month}:
+    delete:
+      summary: Deleta uma meta
+      tags:
+        - Metas
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: year
+          in: path
+          required: true
+          description: Filtro do ano desejado
+          schema:
+            type: string
+        - name: month
+          in: path
+          required: true
+          description: Filtro do mês desejado
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro"        
+  /expense/myExpenseById/{_id}:
+    get:
+      summary: Lançamentos por ID
+      tags:
+        - Lançamentos      
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: _id
+          in: path
+          required: true
+          description: Filtro pelo _id
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  description:
+                    type: string
+                  value:
+                    type: number
+                  category:
+                    type: string
+                  date:
+                    type: string
+                    format: date-time
+                    example: "2025-01-08T12:00:00.000Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-01-21T23:02:54.937Z"
+                  user:
+                    type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
+  /expense/myExpenseByDescription/{description}:
+    get:
+      summary: Lançamentos por descrição
+      tags:
+        - Lançamentos
+      description: Retorna uma lista de lançamentos que contenha a descrição
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: description
+          in: path
+          required: true
+          description: Filtro pela descrição, filtro que contenha a descrição, não sendo necessário ser exatamente igual
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    category:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                      example: "2025-01-08T12:00:00.000Z"
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      example: "2025-01-21T23:02:54.937Z"
+                    user:
+                      type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
+  /expense/myExpenseByCategory/{category}:
+    get:
+      summary: Lançamentos por categoria
+      tags:
+        - Lançamentos
+      description: Retorna uma lista de lançamentos que contenha a categoria
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: category
+          in: path
+          required: true
+          description: Filtro pela categoria, categoria que contenha o valor, não necessário ser exatamente igual
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    category:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                      example: "2025-01-08T12:00:00.000Z"
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      example: "2025-01-21T23:02:54.937Z"
+                    user:
+                      type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
+        
+  /expense/myExpenseByDate/{date}:
+    get:
+      summary: Lançamentos por data
+      tags:
+        - Lançamentos
+      description: Retorna uma lista de lançamentos que contenha a data, sendo apenas ano YYYY, mês YYYY-MM, ou dia YYYY-MM-dd
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: date
+          in: path
+          required: true
+          description: Filtro pela data
+          schema:
+            type: string
+            example: 2025, 2025-01, 2025-01-25
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    category:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                      example: "2025-01-08T12:00:00.000Z"
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      example: "2025-01-21T23:02:54.937Z"
+                    user:
+                      type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
+  /expense/create:
+      post:
+        summary: Criar um novo lançamento
+        tags:
+          - Lançamentos
+        description: Cria lançamentos
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - description
+                  - value
+                  - category
+                  - date
+                  - updatedAt
+                properties:
+                  description:
+                    type: string
+                  value:
+                    type: number
+                  category:
+                    type: string
+                  date:
+                      type: string
+                      format: date-time
+                      example: "2025-01-08T12:00:00.000Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-01-21T23:02:54.937Z"
+        responses:
+          "201":
+            description: Retorna uma mensagem de sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+          "400":
+            description: "Erro na requisição ou no formato dos dados"
+  /expense/update/{_id}:
+    patch:
+      summary: Alterar o lançamento definido
+      tags:
+        - Lançamentos
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: _id
+          in: path
+          required: true
+          description: Filtra pelo _id
+          schema:
+            type: string
+      description: Altera o lançamento definido
+      requestBody:
+        required: true
+        content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - description
+                  - value
+                  - category
+                  - date
+                  - updatedAt
+                properties:
+                  description:
+                    type: string
+                  value:
+                    type: number
+                  category:
+                    type: string
+                  date:
+                      type: string
+                      format: date-time
+                      example: "2025-01-08T12:00:00.000Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-01-21T23:02:54.937Z"
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"
+  /expense/delete/{_id}:
+    delete:
+      summary: Deleta um lançamento
+      tags:
+        - Lançamentos
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: _id
+          in: path
+          required: true
+          description: Filtra pelo _id
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"       
+  /operation/allValues:
+    get:
+      summary: Somatório de todos os lançamentos
+      tags:
+        - Operações      
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"        
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number                  
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
+  /operation/allDateValues/{date}:
+    get:
+      summary: Somatório de todos os lançamentos por data
+      tags:
+        - Operações      
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"  
+        - name: date
+          in: path
+          required: true
+          description: Filtro pela data
+          schema:
+            type: string
+            example: 2025, 2025-01, 2025-01-25      
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  value:
+                    type: number                  
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
