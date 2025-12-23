@@ -417,7 +417,15 @@ paths:
       summary: Criar uma nova meta
       tags:
         - Metas
-      description: Cria novas metas, é possivel criar uma meta anual definindo o mês referente como 0, os demais seguem o padrão YYYY-MM
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+      description: Cria novas metas, é possivel criar uma meta anual definindo o mês referente como 0, os demais seguem o padrão YYYY-MM. Criar valores de mês como 1, 2, 3 ao invés de 01, 02, 03. O programa aceita valores positivos e negativos, no entanto não mandar +1.50, mandar apenas 1.50 nos positivos.
       requestBody:
         required: true
         content:
@@ -467,7 +475,7 @@ paths:
           schema:
             type: string
             example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
-      description: Altera a meta definida é possivel alterar uma meta anual definindo o mês referente como 0, os demais seguem o padrão YYYY-MM
+      description: Altera novas metas, é possivel alterar uma meta anual definindo o mês referente como 0, os demais seguem o padrão YYYY-MM. Criar valores de mês como 1, 2, 3 ao invés de 01, 02, 03. O programa aceita valores positivos e negativos, no entanto não mandar +1.50, mandar apenas 1.50 nos positivos.
       requestBody:
         required: true
         content:
@@ -744,7 +752,15 @@ paths:
         summary: Criar um novo lançamento
         tags:
           - Lançamentos
-        description: Cria lançamentos
+        parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        description: Cria lançamentos. O sistema aceita valores positivos e negativos, no entanto mandar 1.50 ao invés de +1.50.
         requestBody:
           required: true
           content:
