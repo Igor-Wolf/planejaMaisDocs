@@ -780,7 +780,7 @@ paths:
           required: false
           description: Ordenação do retorno 
           schema:
-            type: number
+            type: string
             example: asc ou desc
       responses:
         "200":
