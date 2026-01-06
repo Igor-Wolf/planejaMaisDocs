@@ -747,6 +747,71 @@ paths:
                       type: string
         "400":
           description: "Erro na requisição ou na estrutura dos dados"  
+  /expense/myExpenseAll:
+    get:
+      summary: Todos os lançamentos
+      tags:
+        - Lançamentos
+      description: Retorna uma lista de todos os lançamentos com paginação a ser definida
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        - name: skip
+          in: path
+          required: false
+          description: Numero de itens que serão pulados
+          schema:
+            type: number
+            example: 20, 5, 0
+        - name: limit
+          in: path
+          required: false
+          description: Numero máximo de itens que serão retornados na requisição
+          schema:
+            type: number
+            example: 20, 5, 0
+        - name: order
+          in: path
+          required: false
+          description: Ordenação do retorno 
+          schema:
+            type: number
+            example: asc ou desc
+      responses:
+        "200":
+          description: Informações retornadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    category:
+                      type: string
+                    date:
+                      type: string
+                      format: date-time
+                      example: "2025-01-08T12:00:00.000Z"
+                    updatedAt:
+                      type: string
+                      format: date-time
+                      example: "2025-01-21T23:02:54.937Z"
+                    user:
+                      type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"  
   /expense/create:
       post:
         summary: Criar um novo lançamento
@@ -797,6 +862,8 @@ paths:
                   type: object
                   properties:
                     message:
+                      type: string
+                    _id:
                       type: string
           "400":
             description: "Erro na requisição ou no formato dos dados"
