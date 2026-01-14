@@ -1089,7 +1089,8 @@ paths:
     get:
       summary: Somatório de todos os lançamentos
       tags:
-        - Operações      
+        - Operações  
+      description: Retorna o somatório dos lançamentos, aceitando filtros quando necesário. Possível saldo da aplicação.
       parameters:
         - name: authorization
           in: header
@@ -1097,7 +1098,49 @@ paths:
           description: O token do usuário
           schema:
             type: string
-            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"        
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf" 
+        - name: startDate
+          in: query
+          required: false
+          description: Ordenação do retorno por date
+          schema:
+            type: date-time
+            example: 2026-01-05T00:00:00.000Z
+        - name: endDate
+          in: query
+          required: false
+          description: Ordenação do retorno por date
+          schema:
+            type: date-time
+            example: 2026-01-07T23:59:59.999Z
+        - name: category
+          in: query
+          required: false
+          description: Filtro pela categoria
+          schema:
+            type: string
+            example: Alimentação
+        - name: description
+          in: query
+          required: false
+          description: Filtro pela descrição
+          schema:
+            type: string
+            example: Padaria e Mercadinho
+        - name: startValue
+          in: query
+          required: false
+          description: Ordenação do retorno por value
+          schema:
+            type: number
+            example: 12.50
+        - name: endValue
+          in: query
+          required: false
+          description: Ordenação do retorno por value
+          schema:
+            type: number
+            example: 100.00       
       responses:
         "200":
           description: Informações retornadas com sucesso
