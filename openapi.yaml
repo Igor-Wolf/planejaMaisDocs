@@ -402,13 +402,13 @@ paths:
           required: false
           description: Filtro do ano desejado
           schema:
-            type: string
+            type: number
         - name: month
           in: query
           required: false
           description: Filtro do mês desejado
           schema:
-            type: string
+            type: number
         - name: title
           in: query
           required: false
@@ -587,6 +587,32 @@ paths:
           schema:
             type: string
         
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro"        
+  /goal/deleteAll:
+    delete:
+      summary: Deleta todas as metas
+      tags:
+        - Metas
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+                
       responses:
         "200":
           description: Retorna uma mensagem de sucesso
@@ -1124,6 +1150,32 @@ paths:
           description: Filtra pelo _id
           schema:
             type: string
+      responses:
+        "200":
+          description: Retorna uma mensagem de sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "400":
+          description: "Erro na requisição ou na estrutura dos dados"       
+  /expense/deleteAll:
+    delete:
+      summary: Deleta todos os lançamentos
+      tags:
+        - Lançamentos
+      parameters:
+        - name: authorization
+          in: header
+          required: true
+          description: O token do usuário
+          schema:
+            type: string
+            example: "Bearer asldfkasjdlfjasdlfasjdflasdjfçlsaalsdkjf"
+        
       responses:
         "200":
           description: Retorna uma mensagem de sucesso
