@@ -509,6 +509,8 @@ paths:
                     type: string
         "400":
           description: "Erro na requisição ou no formato dos dados"
+        "409":
+          description: "Conflito meta referente ao mes/ano já cadastrada. Duplicidade"
         
   /goal/update/{_id}:
     patch:
@@ -567,6 +569,8 @@ paths:
                     type: string
         "400":
           description: "Erro na requisição ou na estrutura dos dados"
+        "409":
+          description: "Conflito, duplicidade na alteração do mes/ano"
   /goal/delete/{_id}:
     delete:
       summary: Deleta uma meta
